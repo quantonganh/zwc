@@ -32,7 +32,7 @@ var saveCmd = &cobra.Command{
 		allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), append(chromedp.DefaultExecAllocatorOptions[:], chromedp.Flag("headless", false))...)
 		defer cancel()
 
-		ctx, cancel := chromedp.NewContext(allocCtx, chromedp.WithLogf(log.Printf))
+		ctx, cancel := chromedp.NewContext(allocCtx, chromedp.WithDebugf(log.Printf))
 		defer cancel()
 
 		subject, err := cmd.Flags().GetString("subject")
@@ -45,7 +45,7 @@ var saveCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		if err := chromedp.Run(ctx, vmsSaveDraft(subject, attachFile)); err != nil {
+		if err := chromedp.Run(ctx, zwcSaveDraft(subject, attachFile)); err != nil {
 			log.Fatal(err)
 		}
 	},
@@ -62,7 +62,7 @@ func init() {
 	}
 }
 
-func vmsSaveDraft(subject, attachFile string) chromedp.Tasks {
+func zwcSaveDraft(subject, attachFile string) chromedp.Tasks {
 	selName := `//input[@id="username"]`
 	selPass := `//input[@id="password"]`
 
